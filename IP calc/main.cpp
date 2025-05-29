@@ -45,7 +45,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		break;
-		case IDC_IPMASK:
+		/*case IDC_IPMASK:
 		{
 			if (HIWORD(wParam) == EN_CHANGE)
 			{
@@ -57,7 +57,7 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				SendMessage(hIPprefix, WM_SETTEXT, 0, (LPARAM)szIPprefix);
 			}
 		}
-	    break;
+	    break;*/
 		case IDC_EDIT_PREFIX:
 		{
 			if (HIWORD(wParam) == EN_CHANGE)
@@ -77,7 +77,12 @@ BOOL CALLBACK DlgProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			EndDialog(hwnd, 0);
 		}
 	}
-		break;
+	break;
+	case WM_NOTIFY:
+	{
+
+	}
+	break;
 	case WM_CLOSE:
 		EndDialog(hwnd, 0);
 	}
