@@ -3,6 +3,7 @@
 #include<CommCtrl.h>
 #include<cstdio>//sprintf
 #include<iostream>
+#include <bitset>
 #include"resource.h"
 
 #pragma warning(disable : 28251)//чтобы WinMain не подчеркивалась 
@@ -129,6 +130,8 @@ VOID PrintInfo(HWND hwnd)
 	CHAR sz_NumberOfIPs[SIZE];
 	CHAR sz_NumberOfHosts[SIZE];
 	CHAR sz_prefix[3];
+	CHAR sz_BinaryIP[SIZE];/////////////////////////////////////////////////
+	CHAR sz_BinaryMask[SIZE];///////////////////////////////////////////////
 	HWND hIPaddress = GetDlgItem(hwnd, IDC_IPADDRESS);
 	HWND hIPmask = GetDlgItem(hwnd, IDC_IPMASK);
 	HWND hEditPrefix = GetDlgItem(hwnd, IDC_EDIT_PREFIX);
@@ -146,8 +149,10 @@ VOID PrintInfo(HWND hwnd)
 	sprintf(sz_BroadcastIP_buffer, "Широковещательный адрес:\t%s", IPaddressToString(dwIPaddress | ~dwIPmask, sz_buffer));
 	sprintf(sz_NumberOfIPs, "Количество IP-адресов:\t%i", 1<<(32-dwIPprefix));
 	sprintf(sz_NumberOfHosts, "Количество узлов:\t\t%i", (1 << (32 - dwIPprefix))-2);
+	sprintf(sz_BinaryIP, "IP-адрес (двоичный):\t%s", std::bitset<32>(dwIPaddress).to_string().c_str());
+	sprintf(sz_BinaryMask, "Маска (двоичный):\t%s", std::bitset<32>(dwIPmask).to_string().c_str());
 
-	sprintf(sz_info, "%s\n%s\n%s\n%s", sz_NetworkIP_buffer, sz_BroadcastIP_buffer, sz_NumberOfIPs, sz_NumberOfHosts);
+	sprintf(sz_info, "%s\n%s\n%s\n%s\n%s\n%s", sz_NetworkIP_buffer, sz_BroadcastIP_buffer, sz_NumberOfIPs, sz_NumberOfHosts, sz_BinaryIP, sz_BinaryMask);
 	SendMessage(hStaticInfo, WM_SETTEXT, 0, (LPARAM)sz_info);
 }
 CHAR* IPaddressToString(DWORD dwIPaddress, CHAR sz_IPaddress[])
