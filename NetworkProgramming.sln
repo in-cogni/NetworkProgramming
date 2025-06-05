@@ -1,26 +1,60 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IP calc", "IP calc\IP calc.vcxproj", "{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinSockServer", "WinSockServer\WinSockServer.vcxproj", "{733A1DFB-62AE-4206-B776-5AA7362353EC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinSockClient", "WinSockClient\WinSockClient.vcxproj", "{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Debug|Any CPU.Build.0 = Debug|x64
 		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Debug|x64.ActiveCfg = Debug|x64
 		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Debug|x64.Build.0 = Debug|x64
 		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Debug|x86.ActiveCfg = Debug|Win32
 		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Debug|x86.Build.0 = Debug|Win32
+		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Release|Any CPU.ActiveCfg = Release|x64
+		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Release|Any CPU.Build.0 = Release|x64
 		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Release|x64.ActiveCfg = Release|x64
 		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Release|x64.Build.0 = Release|x64
 		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Release|x86.ActiveCfg = Release|Win32
 		{2A69E67D-A45D-4CEE-A619-FF79823F3C0A}.Release|x86.Build.0 = Release|Win32
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Debug|Any CPU.Build.0 = Debug|x64
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Debug|x64.ActiveCfg = Debug|x64
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Debug|x64.Build.0 = Debug|x64
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Debug|x86.ActiveCfg = Debug|Win32
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Debug|x86.Build.0 = Debug|Win32
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Release|Any CPU.ActiveCfg = Release|x64
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Release|Any CPU.Build.0 = Release|x64
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Release|x64.ActiveCfg = Release|x64
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Release|x64.Build.0 = Release|x64
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Release|x86.ActiveCfg = Release|Win32
+		{733A1DFB-62AE-4206-B776-5AA7362353EC}.Release|x86.Build.0 = Release|Win32
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Debug|Any CPU.Build.0 = Debug|x64
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Debug|x64.ActiveCfg = Debug|x64
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Debug|x64.Build.0 = Debug|x64
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Debug|x86.ActiveCfg = Debug|Win32
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Debug|x86.Build.0 = Debug|Win32
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Release|Any CPU.ActiveCfg = Release|x64
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Release|Any CPU.Build.0 = Release|x64
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Release|x64.ActiveCfg = Release|x64
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Release|x64.Build.0 = Release|x64
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Release|x86.ActiveCfg = Release|Win32
+		{7E26D800-CF25-4B01-9F37-33E9AFCC3EC1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
