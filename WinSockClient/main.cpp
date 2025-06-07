@@ -2,7 +2,6 @@
 #define WIN32_LEAN_AND_MEAN
 #endif // !WIN32_LEAN_AND_MEAN
 
-
 #include<Windows.h>
 #include<iphlpapi.h>
 #include<WinSock2.h>
@@ -14,6 +13,7 @@ using namespace std;
 
 #define DEFAULT_PORT "27016"
 #define DEFAULT_BUFFER_LENGTH 1500
+#define SZ_SORRY "Sorry, all is busy"
 
 void main()
 {
@@ -83,6 +83,9 @@ void main()
 		if (iResult > 0)cout << "Bytes received: "<<iResult<<", Message: " <<recvbuffer<< endl;
 		else if (iResult == 0)cout << "Connection closed " << endl;
 		else cout << "Receive failed with code: "<<WSAGetLastError() << endl;
+		////////////////////////////////////////////////////////////////////
+		if (strcmp(recvbuffer, SZ_SORRY) == 0) break;
+		////////////////////////////////////////////////////////////////////
 		ZeroMemory(send_buffer, sizeof(send_buffer));
 		ZeroMemory(recvbuffer, sizeof(recvbuffer));
 		cout << "¬ведите сообщение: "; 
