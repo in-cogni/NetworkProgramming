@@ -23,10 +23,10 @@ void main()
 	WSAData wsaData;
 	INT iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
-	addrinfo hints;
-	ZeroMemory(&hints, sizeof(hints));
+	addrinfo hints;//содержит критерии создани€ сокета
+	ZeroMemory(&hints, sizeof(hints));//обнул€ет пам€ть структуры hints
 	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_socktype = SOCK_STREAM;//потоковый сокет (TCP)
 	hints.ai_protocol = IPPROTO_TCP;
 
 	//2) ¬ыполн€ем разрешение имен: 
@@ -60,41 +60,39 @@ void main()
 	}
 
 	//5) ѕолучение и отправка данных:
-	//int recvbuflen = DEFAULT_BUFFER_LENGTH;
 	CHAR send_buffer[DEFAULT_BUFFER_LENGTH] = "Hello, Server, I am Client";
 	CHAR recvbuffer[DEFAULT_BUFFER_LENGTH]{};
 
 	do
 	{
-	iResult = send(connect_socket, send_buffer, strlen(send_buffer), 0);
-	if (iResult == SOCKET_ERROR)
-	{
-		cout << "Send data failed with " << WSAGetLastError() << endl;
-		closesocket(connect_socket);
-		freeaddrinfo(result);
-		WSACleanup();
-		return;
-	}
-	cout << iResult << " Bytes sent" << endl;
+		iResult = send(connect_socket, send_buffer, strlen(send_buffer), 0);
+		if (iResult == SOCKET_ERROR)
+		{
+			cout << "Send data failed with " << WSAGetLastError() << endl;
+			closesocket(connect_socket);
+			freeaddrinfo(result);
+			WSACleanup();
+			return;
+		}
+		cout << iResult << " Bytes sent" << endl;
 
-	//6) Receive data:
-	
-		iResult = recv(connect_socket, recvbuffer, DEFAULT_BUFFER_LENGTH, 0);
-		if (iResult > 0)cout << "Bytes received: "<<iResult<<", Message: " <<recvbuffer<< endl;
+		//6) Receive data:
+
+		iResult = recv(connect_socket, recvbuffer, DEFAULT_BUFFER_LENGTH, 0);//получаем данные от сервера в recvbuffer
+		if (iResult > 0)cout << "Bytes received: " << iResult << ", Message: " << recvbuffer << endl;
 		else if (iResult == 0)cout << "Connection closed " << endl;
-		else cout << "Receive failed with code: "<<WSAGetLastError() << endl;
+		else cout << "Receive failed with code: " << WSAGetLastError() << endl;
 		////////////////////////////////////////////////////////////////////
 		if (strcmp(recvbuffer, SZ_SORRY) == 0) break;
 		////////////////////////////////////////////////////////////////////
 		ZeroMemory(send_buffer, sizeof(send_buffer));
 		ZeroMemory(recvbuffer, sizeof(recvbuffer));
-		cout << "¬ведите сообщение: "; 
-		SetConsoleCP(1251);
+		cout << "¬ведите сообщение: ";
+		SetConsoleCP(1251);//смена кодировки дл€ русского текста
 		cin.getline(send_buffer, DEFAULT_BUFFER_LENGTH);
 		SetConsoleCP(866);
-		//for (int i = 0; send_buffer[i]; i++)send_buffer[i] = tolower(send_buffer[i]);
 	} while (iResult > 0 && strcmp(send_buffer, "exit"));
-	
+
 	//7) Disconnect:
 	iResult = shutdown(connect_socket, SD_SEND);
 	closesocket(connect_socket);
