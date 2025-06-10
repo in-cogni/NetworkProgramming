@@ -13,7 +13,7 @@ using namespace std;
 
 #define DEFAULT_PORT "27016"
 #define DEFAULT_BUFFER_LENGTH 1500
-#define SZ_SORRY "Sorry, all is busy"
+#define SZ_SORRY "Sorry, but all is busy"
 
 void main()
 {
