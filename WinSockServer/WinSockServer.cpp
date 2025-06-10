@@ -1,12 +1,4 @@
-//WinSockServerMore actions
-#define _CRT_SECURE_NO_WARNINGS
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif // !WIN32_LEAN_AND_MEAN
-
-#include<Windows.h>
-#include<WinSock2.h>
-#include<WS2tcpip.h>
+#include<WS2tcpip.h>More actions
 #include<iphlpapi.h>
 #include<iostream>
 using namespace std;
@@ -16,6 +8,14 @@ using namespace std;
 #define DEFAULT_PORT			"27016"
 #define DEFAULT_BUFFER_LENGTH	1500
 #define SZ_SORRY  "Sorry, but all is busy"
+
+VOID WINAPI HandleClient(SOCKET ClientSocket);
+CONST INT MAX_CLIENTS = 3;
+SOCKET clients[MAX_CLIENTS] = {};
+DWORD dwThreadIDs[MAX_CLIENTS] = {};
+HANDLE hThreads[MAX_CLIENTS] = {};
+
+INT g_connected_clients_count = 0;	//g_ - Global
 
 void main()
 {
@@ -84,37 +84,30 @@ void main()
 		return;
 	}
 
-	VOID WINAPI HandleClient(SOCKET ClientSocket);
-	CONST INT MAX_CLIENTS = 3;
-	SOCKET clients[MAX_CLIENTS] = {};
-	DWORD dwThreadIDs[MAX_CLIENTS] = {};
-	HANDLE hThreads[MAX_CLIENTS] = {};
-
-	INT i = 0;
-
 	while (true)
 	{
 		SOCKET ClientSocket = accept(ListenSocket, NULL, NULL);
-		if (i < MAX_CLIENTS)
-		{
-			//HandleClient(ClientSocket);
-			clients[i] = ClientSocket;
-			hThreads[i] = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HandleClient, (LPVOID)clients[i], 0, &dwThreadIDs[i]);
-			i++;
-		}
-		else
-		{
-			CHAR receive_buffer[DEFAULT_BUFFER_LENGTH] = {};
-			INT iResult = recv(ClientSocket, receive_buffer, DEFAULT_BUFFER_LENGTH, 0);
-			if (iResult > 0)
+			if (g_connected_clients_count < MAX_CLIENTS)
 			{
-				cout << "Bytes received: " << iResult << endl;
-				cout << "Message: " << receive_buffer << endl;
-				//CHAR SZ_SORRY[] = "Sorry, but all is busy";
-				INT iSendResult = send(ClientSocket, SZ_SORRY, strlen(SZ_SORRY), 0);
-				closesocket(ClientSocket);
+				//HandleClient(ClientSocket);
+				clients[g_connected_clients_count] = ClientSocket;
+				hThreads[g_connected_clients_count] =
+					CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)HandleClient, (LPVOID)clients[g_connected_clients_count], 0, &dwThreadIDs[g_connected_clients_count]);
+				g_connected_clients_count++;
 			}
-		}
+			else
+			{
+				CHAR receive_buffer[DEFAULT_BUFFER_LENGTH] = {};
+				INT iResult = recv(ClientSocket, receive_buffer, DEFAULT_BUFFER_LENGTH, 0);
+				if (iResult > 0)
+				{
+					cout << "Bytes received: " << iResult << endl;
+					cout << "Message: " << receive_buffer << endl;
+					//CHAR SZ_SORRY[] = "Sorry, but all is busy";
+					INT iSendResult = send(ClientSocket, SZ_SORRY, strlen(SZ_SORRY), 0);
+					closesocket(ClientSocket);
+				}
+			}
 	}
 
 	WaitForMultipleObjects(MAX_CLIENTS, hThreads, TRUE, INFINITE);
@@ -148,33 +141,37 @@ VOID WINAPI HandleClient(SOCKET ClientSocket)
 	do
 	{
 		ZeroMemory(recvbuffer, sizeof(recvbuffer));
-		//iResult = recv(ClientSocket, recvbuffer, recv_buffer_lennth, 0);Add commentMore actions
+		//iResult = recv(ClientSocket, recvbuffer, recv_buffer_lennth, 0);
 		iResult = recvfrom(ClientSocket, recvbuffer, recv_buffer_lennth, 0, (SOCKADDR*)&peer, &address_length);
 		if (iResult > 0)
 		{
 			inet_ntop(AF_INET, &peer.sin_addr, address, INET_ADDRSTRLEN);
-			//cout << "Peer: " << address << endl
+			//cout << "Peer: " << address << endl;
 				/*<< (int)peer.sin_addr.S_un.S_un_b.s_b1 << "."
 				<< (int)peer.sin_addr.S_un.S_un_b.s_b2 << "."
 				<< (int)peer.sin_addr.S_un.S_un_b.s_b3 << "."
-				<< (int)peer.sin_addr.S_un.S_un_b.s_b4 */
-				//<< endl;
-			cout << "Bytes received from " << address << ":" << port << " - " << iResult << " - ";
+			    << (int)peer.sin_addr.S_un.S_un_b.s_b4
+				<< endl; */
+				cout << "Bytes received from " << address << ":" << port << " - " << iResult << " - ";
 			//cout << "Message: " << recvbuffer << endl;
 			cout << recvbuffer << endl;
 			CHAR sz_responce[] = "Hello, I am Server! Nice to meet you!";
 			//INT iSendResult = send(ClientSocket, sz_responce, sizeof(sz_responce), 0);
-			INT iSendResult = send(ClientSocket, recvbuffer, strlen(recvbuffer), 0);
-			if (iSendResult == SOCKET_ERROR)
-			{
-				cout << "Error: Send failed with code: " << WSAGetLastError() << endl;
-				closesocket(ClientSocket);
-				//closesocket(ListenSocket);
-				//freeaddrinfo(result);
-				//WSACleanup();
-				//return;
-			}
-			cout << "Bytes sent: " << iSendResult << endl;
+				for (int i = 0; i < g_connected_clients_count; i++)
+				{
+					
+					INT iSendResult = send(clients[i], recvbuffer, strlen(recvbuffer), 0);
+					if (iSendResult == SOCKET_ERROR)
+					{
+						cout << "Error: Send failed with code: " << WSAGetLastError() << endl;
+						closesocket(ClientSocket);
+						//closesocket(ListenSocket);
+						//freeaddrinfo(result);
+						//WSACleanup();
+						//return;
+					}
+				}
+			//cout << "Bytes sent: " << iSendResult << endl;
 		}
 		else if (iResult == 0)
 		{
